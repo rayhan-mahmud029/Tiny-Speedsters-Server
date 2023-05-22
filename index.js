@@ -53,9 +53,27 @@ async function run() {
         // get specific id data
         app.get('/all-toys/:id', async (req, res) => {
             const id = req.params.id;
-            const query = {_id: new ObjectId(id)};
+            const query = { _id: new ObjectId(id) };
             const result = await allToys.find(query).toArray();
             res.send(result)
+        })
+
+        // post new toy
+        app.post('/add-toy', async (req, res) => {
+            const data = req.body;
+            const doc = {
+                "picture": data.picture,
+                "name": data.toyName,
+                "sellerName": data.sellerName,
+                "sellerEmail": data.sellerEmail,
+                "price": data.price,
+                "ratings": data.ratings,
+                "availableQuantity": data.quantity,
+                "category": data.category,
+                "description": data.description
+            }
+            const result = await allToys.insertOne(doc);
+            res.send(result);
         })
 
 
