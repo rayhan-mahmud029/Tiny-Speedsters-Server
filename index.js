@@ -42,11 +42,11 @@ async function run() {
 
         // database and collections
         const database = client.db("tinySpeedsters");
-        const categories = database.collection('categories');
+        const allToys = database.collection('allToys');
 
         // get categories data from database
-        app.get('/categories', async (req, res) => {
-            const result = await categories.find().toArray();
+        app.get('/all-toys', async (req, res) => {
+            const result = await allToys.find().toArray();
             res.send(result)
         })
 
