@@ -109,6 +109,30 @@ async function run() {
             res.send(result)
         })
 
+        // update specific id data
+        app.put('/toy/:id', async (req, res) => {
+            const id = req.params.id;
+            const data = req.body;
+
+            // create a filter for a movie to update
+            const filter = { _id: new ObjectId(id) };
+
+            // this option instructs the method to create a document if no documents match the filter
+            const options = { upsert: true };
+
+            // create a document that sets the plot of the movie
+            const updateToy = {
+                $set: {
+                    price: data.price,
+                    availableQuantity: data.quantity,
+                    description: data.description
+                },
+            };
+
+            const result = await allToys.updateOne(filter, updateToy, options);
+            res.send(result)
+        })
+
 
 
         // post new toy
