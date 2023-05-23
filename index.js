@@ -63,6 +63,7 @@ async function run() {
                 query = { name: searchQuery };
             }
 
+
             console.log(query);
             const result = await allToys.find(query).toArray();
 
@@ -79,6 +80,7 @@ async function run() {
             if (limit > 0) {
                 result.splice(limit);
             }
+
             res.send(result)
         })
 
@@ -89,6 +91,17 @@ async function run() {
             const result = await allToys.find(query).toArray();
             res.send(result)
         })
+
+        // get specific user data
+        app.get('/toys/user', async (req, res) => {
+            const userEmail = req.query.email;
+            console.log(userEmail);
+            const query = { sellerEmail: userEmail };
+            const result = await allToys.find(query).toArray();
+            res.send(result)
+        })
+
+
 
         // post new toy
         app.post('/add-toy', async (req, res) => {
