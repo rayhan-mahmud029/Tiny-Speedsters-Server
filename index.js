@@ -101,6 +101,14 @@ async function run() {
             res.send(result)
         })
 
+        // delete specific id data
+        app.delete('/toy/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await allToys.deleteOne(query);
+            res.send(result)
+        })
+
 
 
         // post new toy
