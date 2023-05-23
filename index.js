@@ -46,7 +46,39 @@ async function run() {
 
         // get all data from database
         app.get('/all-toys', async (req, res) => {
-            const result = await allToys.find().toArray();
+            const searchTerm = req.query.term;
+            const searchQuery = req.query.query;
+            const sortBy = req.query.sort;
+            const order = req.query.order;
+            const limit = parseInt(req.query.limit);
+
+            console.log(limit, sortBy, order, searchTerm, searchQuery);
+
+            // implement search query
+            let query = {};
+            if (searchTerm === 'category') {
+                query = { category: searchQuery };
+            }
+            else if (searchTerm === 'name') {
+                query = { name: searchQuery };
+            }
+
+            console.log(query);
+            const result = await allToys.find(query).toArray();
+
+            // implement sort operation
+            if (sortBy === 'price') {
+                if (order === 'asc') {
+                    result.sort((a, b) => a.price - b.price)
+                } else if (order === 'dsc') {
+                    result.sort((a, b) => b.price - a.price)
+                }
+            }
+
+            // implement limit operation
+            if (limit > 0) {
+                result.splice(limit);
+            }
             res.send(result)
         })
 
